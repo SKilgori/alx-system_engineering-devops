@@ -11,9 +11,9 @@ function display_info {
 
 if [ -z $subdomain ]; then
   display_info www
-  display_info lb-01
-  display_info web-01
-  display_info web-02
+  display_info 34.229.161.229
+  display_info 52.87.215.132
+  display_info 34.224.15.114
 else
   display_info $subdomain
 fi
