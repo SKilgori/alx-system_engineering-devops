@@ -1,18 +1,19 @@
-#!/usr/bin/env bash
-# write a Bash script that will display information about the subdomains
+#!/bin/bash
 
-dns_config () {
-    script=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-    echo "$2 $script" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+domain=$1
+subdomain=$2
+
+function display_info {
+  record=$(dig $subdomain.$domain +short | awk '{print $1}')
+  type=$(dig $subdomain.$domain +short | awk '{print $4}')
+  echo "The subdomain $subdomain is a $type record and points to $record"
 }
 
-if [ "$#" == 1 ]
-then
-  dns_config "$1" "www.holberton.online"
-  dns_config "$1" "34.229.161.229"
-  dns_config "$1" "52.87.215.132"
-  dns_config "$1" "34.224.15.114"
-elif [ "$#" == 2 ]
-then
-  dns_config "$1" "$2"
+if [ -z $subdomain ]; then
+  display_info www
+  display_info lb-01
+  display_info web-01
+  display_info web-02
+else
+  display_info $subdomain
 fi
